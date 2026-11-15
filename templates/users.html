@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+{% block title %}Users{% endblock %}
+
+{% block content %}
+<section class="page-head">
+  <div>
+    <span class="eyebrow">Administration</span>
+    <h1>Campus accounts</h1>
+  </div>
+</section>
+
+<p class="muted">Check each student's identity against official campus records or in person before approving. Approval grants access to the campus portal.</p>
+
+<div class="card">
+  <table class="data-table">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Student ID</th>
+        <th>Email</th>
+        <th>Role</th>
+        <th>Identity verification</th>
+        <th>Created</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for user in users %}
+      <tr>
+        <td>{{ user.full_name }}</td>
+        <td>{{ user.student_id or '-' }}</td>
+        <td>{{ user.email }}</td>
+        <td>{{ user.role }}</td>
+        <td>{{ user.identity_status|title }}</td>
+        <td>{{ user.created_at }}</td>
+        <td>
+          {% if user.role == 'user' and user.identity_status == 'pending' %}
+          <form method="post" action="{{ url_for('verify_student', user_id=user.id) }}">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+            <button class="btn btn-primary" type="submit">Verify student ID</button>
+          </form>
+          {% else %}
+          -
+          {% endif %}
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

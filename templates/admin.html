@@ -1,0 +1,86 @@
+{% extends 'base.html' %}
+{% block title %}Admin dashboard{% endblock %}
+
+{% block content %}
+<section class="page-head">
+  <div>
+    <span class="eyebrow">Administration</span>
+    <h1>Service requests overview</h1>
+  </div>
+</section>
+
+<div class="stats-grid">
+  {% for key, value in stats.items() %}
+    <div class="stat-box">
+      <span class="stat-label">{{ key }}</span>
+      <strong>{{ value }}</strong>
+    </div>
+  {% endfor %}
+</div>
+
+<div class="card filter-card">
+  <form method="get" class="filter-form">
+    <div class="filter-row">
+      <div>
+        <label for="status">Status</label>
+        <select id="status" name="status">
+          <option value="">All statuses</option>
+          {% for value in ['Pending', 'In Progress', 'Approved', 'Resolved'] %}
+            <option value="{{ value }}" {% if selected_status == value %}selected{% endif %}>{{ value }}</option>
+          {% endfor %}
+        </select>
+      </div>
+
+      <div>
+        <label for="category">Category</label>
+        <select id="category" name="category">
+          <option value="">All categories</option>
+          {% for value in categories %}
+            <option value="{{ value }}" {% if selected_category == value %}selected{% endif %}>{{ value }}</option>
+          {% endfor %}
+        </select>
+      </div>
+
+      <div class="search-box">
+        <label for="q">Search</label>
+        <input id="q" name="q" type="text" value="{{ q }}" placeholder="Ticket, name, email...">
+      </div>
+    </div>
+
+    <button class="btn btn-primary" type="submit">Apply filters</button>
+  </form>
+</div>
+
+<div class="card">
+  {% if requests %}
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>Ticket</th>
+          <th>Applicant</th>
+          <th>Category</th>
+          <th>Status</th>
+          <th>Priority</th>
+          <th>Updated</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for row in requests %}
+          <tr>
+            <td><a href="{{ url_for('request_detail', request_id=row.id) }}">{{ row.ticket_code }}</a></td>
+            <td>{{ row.full_name }}</td>
+            <td>{{ row.category }}</td>
+            <td><span class="badge status-{{ row.status|replace(' ', '-')|lower }}">{{ row.status }}</span></td>
+            <td>{{ row.priority }}</td>
+            <td>{{ row.updated_at }}</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  {% else %}
+    <div class="empty-state">
+      <p>No requests match the current filters.</p>
+    </div>
+  {% endif %}
+</div>
+{% endblock %}

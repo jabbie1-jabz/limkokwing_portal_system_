@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% block title %}Create account{% endblock %}
+
+{% block content %}
+<section class="card form-card">
+  <h1>Create your Limkokwing account</h1>
+  <p class="muted">Register with your Limkokwing student details. A campus administrator must verify your identity before sign-in is enabled.</p>
+
+  <form method="post">
+    <div class="form-row">
+      <label for="full_name">Full name</label>
+      <input id="full_name" name="full_name" type="text" required>
+    </div>
+
+    <div class="form-row">
+      <label for="campus_id">Campus ID</label>
+      <input id="campus_id" name="campus_id" type="text" inputmode="numeric" pattern="[0-9]{5}" maxlength="5" required>
+    </div>
+
+    <div class="form-row">
+      <label for="campus_code">Campus code</label>
+      <input id="campus_code" name="campus_code" type="password" inputmode="numeric" pattern="[0-9]{4}" maxlength="4" required>
+    </div>
+
+    <div class="form-row">
+      <label for="student_id">Student ID</label>
+      <input id="student_id" name="student_id" type="text" pattern="[A-Za-z0-9-]{4,20}" maxlength="20" required>
+    </div>
+
+    <div class="form-row">
+      <label for="email">Email address</label>
+      <input id="email" name="email" type="email" required>
+    </div>
+
+    <div class="form-row">
+      <label for="password">Password</label>
+      <input id="password" name="password" type="password" minlength="8" required>
+    </div>
+
+    <button class="btn btn-primary" type="submit">Create account</button>
+  </form>
+</section>
+{% endblock %}

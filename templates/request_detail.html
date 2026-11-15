@@ -1,0 +1,90 @@
+{% extends 'base.html' %}
+{% block title %}Request details{% endblock %}
+
+{% block content %}
+<section class="page-head">
+  <div>
+    <span class="eyebrow">Request</span>
+    <h1>{{ item.ticket_code }}</h1>
+  </div>
+  <a class="btn btn-secondary" href="{{ url_for('dashboard') if session.get('role') != 'admin' else url_for('admin_dashboard') }}">Back</a>
+</section>
+
+<div class="detail-layout">
+  <div class="card detail-card">
+    <h2>Request details</h2>
+    <dl class="detail-list">
+      <div><dt>Applicant</dt><dd>{{ item.full_name }}</dd></div>
+      <div><dt>Email</dt><dd>{{ item.email }}</dd></div>
+      <div><dt>Category</dt><dd>{{ item.category }}</dd></div>
+      <div><dt>Service type</dt><dd>{{ item.service_type }}</dd></div>
+      <div><dt>Status</dt><dd><span class="badge status-{{ item.status|replace(' ', '-')|lower }}">{{ item.status }}</span></dd></div>
+      <div><dt>Priority</dt><dd>{{ item.priority }}</dd></div>
+      <div><dt>Created</dt><dd>{{ item.created_at }}</dd></div>
+      <div><dt>Last updated</dt><dd>{{ item.updated_at }}</dd></div>
+    </dl>
+
+    <div class="field-block">
+      <h3>Description</h3>
+      <p>{{ item.description }}</p>
+    </div>
+  </div>
+
+  {% if session.get('role') == 'admin' %}
+    <div class="card detail-card admin-tools">
+      <h2>Update request</h2>
+      <form method="post" action="{{ url_for('update_request', request_id=item.id) }}">
+        <div class="form-row">
+          <label for="status">Status</label>
+          <select id="status" name="status">
+            {% for value in ['Pending', 'In Progress', 'Approved', 'Resolved'] %}
+              <option value="{{ value }}" {% if item.status == value %}selected{% endif %}>{{ value }}</option>
+            {% endfor %}
+          </select>
+        </div>
+
+        <div class="form-row">
+          <label for="priority">Priority</label>
+          <select id="priority" name="priority">
+            {% for value in ['Low', 'Normal', 'High'] %}
+              <option value="{{ value }}" {% if item.priority == value %}selected{% endif %}>{{ value }}</option>
+            {% endfor %}
+          </select>
+        </div>
+
+        <div class="form-row">
+          <label for="note">Add note</label>
+          <textarea id="note" name="note" rows="4" placeholder="Add an update for this campus request..."></textarea>
+        </div>
+
+        <label class="checkbox-row">
+          <input type="checkbox" name="is_internal" value="on">
+          Internal note
+        </label>
+
+        <button class="btn btn-primary" type="submit">Save update</button>
+      </form>
+    </div>
+  {% endif %}
+</div>
+
+<div class="card notes-card">
+  <h2>Notes</h2>
+  {% if notes %}
+    <div class="notes-list">
+      {% for note in notes %}
+        <article class="note-item {% if note.is_internal %}internal{% endif %}">
+          <div class="note-meta">
+            <strong>{{ note.full_name }}</strong>
+            <span>{{ note.created_at }}</span>
+            {% if note.is_internal %}<span class="internal-tag">Internal</span>{% endif %}
+          </div>
+          <p>{{ note.note }}</p>
+        </article>
+      {% endfor %}
+    </div>
+  {% else %}
+    <p class="muted">No notes yet for this request.</p>
+  {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}Limkokwing Campus Portal{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="container nav-wrap">
+        <a class="brand" href="{{ url_for('index') }}">
+          <span class="brand-copy">
+            <strong>{{ config['APP_NAME'] }}</strong>
+            <small>Campus support and services</small>
+          </span>
+        </a>
+        <nav class="nav">
+          {% if session.get('user_id') %}
+            {% if session.get('role') == 'admin' %}
+              <a href="{{ url_for('admin_dashboard') }}">Admin dashboard</a>
+              <a href="{{ url_for('admin_users') }}">Campus users</a>
+            {% else %}
+              <a href="{{ url_for('dashboard') }}">My requests</a>
+              <a href="{{ url_for('new_request') }}">New request</a>
+            {% endif %}
+            <a href="{{ url_for('logout') }}">Sign out</a>
+          {% else %}
+            <a href="{{ url_for('login') }}">Sign in</a>
+            <a href="{{ url_for('register') }}">Create account</a>
+          {% endif %}
+        </nav>
+      </div>
+    </header>
+
+    <main class="container page-shell">
+      {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+          <div class="flash-group">
+            {% for category, message in messages %}
+              <div class="alert alert-{{ category or 'info' }}">{{ message }}</div>
+            {% endfor %}
+          </div>
+        {% endif %}
+      {% endwith %}
+
+      {% block content %}{% endblock %}
+    </main>
+  </body>
+</html>

@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+{% block title %}Submit request{% endblock %}
+
+{% block content %}
+<section class="card form-card wide">
+  <h1>Submit a service request</h1>
+  <p class="muted">Tell us what you need help with so we can route it correctly.</p>
+
+  <form method="post">
+    <div class="form-row two-col">
+      <div>
+        <label for="category">Category</label>
+        <select id="category" name="category" required>
+          <option value="">Select a category</option>
+          {% for category in categories %}
+            <option value="{{ category }}">{{ category }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div>
+        <label for="priority">Priority</label>
+        <select id="priority" name="priority">
+          <option value="Low">Low</option>
+          <option value="Normal" selected>Normal</option>
+          <option value="High">High</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="form-row">
+      <label for="service_type">Service type</label>
+      <select id="service_type" name="service_type" required>
+        <option value="">Select a request type</option>
+        {% for item in service_types %}
+          <option value="{{ item }}">{{ item }}</option>
+        {% endfor %}
+      </select>
+    </div>
+
+    <div class="form-row">
+      <label for="description">Description</label>
+      <textarea id="description" name="description" rows="6" required placeholder="Describe the issue or request in detail."></textarea>
+    </div>
+
+    <button class="btn btn-primary" type="submit">Submit request</button>
+  </form>
+</section>
+{% endblock %}

@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% block title %}Home{% endblock %}
+
+{% block content %}
+<section class="hero">
+  <div>
+    <span class="eyebrow">Limkokwing University of Creative Technology</span>
+    <h1>Campus support, made clear and accessible.</h1>
+    <p>
+      Submit campus service requests, follow progress, and stay connected with
+      the Limkokwing support team from one secure portal.
+    </p>
+    <div class="cta-row">
+      <a class="btn btn-primary" href="{{ url_for('register') }}">Create account</a>
+      <a class="btn btn-secondary" href="{{ url_for('login') }}">Sign in</a>
+    </div>
+  </div>
+  <div class="hero-card">
+    <h3>Popular categories</h3>
+    <ul>
+      <li>IT &amp; digital support</li>
+      <li>Campus facilities</li>
+      <li>Finance &amp; billing</li>
+      <li>Student wellbeing &amp; safety</li>
+    </ul>
+  </div>
+</section>
+
+<section class="info-grid">
+  <div class="info-card">
+    <h3>Fast submissions</h3>
+    <p>Raise a request in minutes with clear descriptions and service categories.</p>
+  </div>
+  <div class="info-card">
+    <h3>Live tracking</h3>
+    <p>Follow each request from pending to resolved with a clear audit trail.</p>
+  </div>
+  <div class="info-card">
+    <h3>Clear updates</h3>
+    <p>Stay informed with request notes, priorities, and status changes.</p>
+  </div>
+</section>
+{% endblock %}

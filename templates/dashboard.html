@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+{% block title %}My requests{% endblock %}
+
+{% block content %}
+<section class="page-head">
+  <div>
+    <span class="eyebrow">My account</span>
+    <h1>My service requests</h1>
+  </div>
+  <a class="btn btn-primary" href="{{ url_for('new_request') }}">New request</a>
+</section>
+
+<div class="card">
+  {% if requests %}
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>Ticket</th>
+          <th>Category</th>
+          <th>Type</th>
+          <th>Status</th>
+          <th>Priority</th>
+          <th>Created</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for row in requests %}
+          <tr>
+            <td><a href="{{ url_for('request_detail', request_id=row.id) }}">{{ row.ticket_code }}</a></td>
+            <td>{{ row.category }}</td>
+            <td>{{ row.service_type }}</td>
+            <td><span class="badge status-{{ row.status|replace(' ', '-')|lower }}">{{ row.status }}</span></td>
+            <td>{{ row.priority }}</td>
+            <td>{{ row.created_at }}</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  {% else %}
+    <div class="empty-state">
+      <p>You have not submitted any requests yet.</p>
+      <a class="btn btn-primary" href="{{ url_for('new_request') }}">Submit your first request</a>
+    </div>
+  {% endif %}
+</div>
+{% endblock %}
