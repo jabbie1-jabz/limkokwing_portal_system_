@@ -35,5 +35,11 @@ $env:CAMPUS_CODE = "set-your-private-campus-code"
 python app.py
 ```
 
+## Android app (Flutter)
+
+The Flutter Android client is in `mobile_app`. Open that folder in Android
+Studio, run the Flask server above, and follow `mobile_app/README.md` to connect
+an Android phone or emulator.
+
 The university logo is not included in this repository. Add it only if you have
 permission to redistribute it, and keep it out of commits unless authorized.
